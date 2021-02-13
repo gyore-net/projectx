@@ -1,7 +1,10 @@
 #Szukseges ahhoz, hogy pi GPIO portjait pythonnal lehessen hasznalni.
 import RPi.GPIO as GPIO
 
+
 import time
+#sleep csak azert van benne, mert sima nyomogombbal tesztelem tuzkodos panelon a dolgot es lusta vagyok osszerakni egy impulzus jeladot... - igy jelen esetben elofordul, hogy tobbszor kontaktal "egy adott pillanatban"
+#tobbszor is ad jelet a nyomogomb es az sql hibara fut, hogy 2 vagy tobb adat van 1 idopillanatban.
 from time import sleep
 from datetime import datetime
 
@@ -25,7 +28,7 @@ GPIO.setmode(GPIO.BCM)
 l1_gpio = int(input("Add meg, hogy az L1 fazis mero, melyik GPIO-ra van csatlakoztatva:"))
 l2_gpio = int(input("Add meg, hogy az L2 fazis mero, melyik GPIO-ra van csatlakoztatva:"))
 l3_gpio = int(input("Add meg, hogy az L3 fazis mero, melyik GPIO-ra van csatlakoztatva:"))
-eon_mero = float(input("Add meg az EON meron szereplo aktualis fogyasztast:"))
+eon_mero = round(float(input("Add meg az EON meron szereplo aktualis fogyasztast:")), 2)
 
 #Kapcsolodas az adatbazishoz:
 db = mysql.connector.connect(
@@ -52,7 +55,7 @@ try:
             mycursor.execute("INSERT INTO TVOF11_1 (Datetime) VALUES (localtime)")
             db.commit()
             eon_mero = eon_mero + 0.0005
-            print("EON:", eon_mero)
+            print("EON:",round(eon_mero, 4))
             GPIO.setup(l1_gpio, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         sleep(0.1)
 
@@ -61,7 +64,7 @@ try:
             mycursor.execute("INSERT INTO TVOF11_2 (Datetime) VALUES (localtime)")
             db.commit()
             eon_mero = eon_mero + 0.0005
-            print("EON:", eon_mero)
+            print("EON:", round(eon_mero, 4))
             GPIO.setup(l2_gpio, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         sleep(0.1)
 
@@ -70,7 +73,7 @@ try:
             mycursor.execute("INSERT INTO TVOF11_3 (Datetime) VALUES (localtime)")
             db.commit()
             eon_mero = eon_mero + 0.0005
-            print("EON:", eon_mero)
+            print("EON:", round(eon_mero, 4))
             GPIO.setup(l3_gpio, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         sleep(0.1)
         
