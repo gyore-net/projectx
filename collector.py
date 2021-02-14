@@ -46,12 +46,12 @@ mycursor = db.cursor()
 GPIO.setup(l1_gpio, GPIO.IN)
 GPIO.setup(l2_gpio, GPIO.IN)
 GPIO.setup(l3_gpio, GPIO.IN)
-print("Asd")
+print("GPIO setup cuccess!"
 
 try:
     while True:
         if GPIO.input(l1_gpio):
-            print("L1", datetime.now())
+            print("L1-->", datetime.now())
             mycursor.execute("INSERT INTO TVOF11_1 (Datetime) VALUES (localtime)")
             db.commit()
             eon_mero = eon_mero + 0.0005
@@ -60,7 +60,7 @@ try:
         sleep(0.1)
 
         if GPIO.input(l2_gpio):
-            print("L2", datetime.now())
+            print("L2-->", datetime.now())
             mycursor.execute("INSERT INTO TVOF11_2 (Datetime) VALUES (localtime)")
             db.commit()
             eon_mero = eon_mero + 0.0005
@@ -69,7 +69,7 @@ try:
         sleep(0.1)
 
         if GPIO.input(l3_gpio):
-            print("L3", datetime.now())
+            print("L3-->", datetime.now())
             mycursor.execute("INSERT INTO TVOF11_3 (Datetime) VALUES (localtime)")
             db.commit()
             eon_mero = eon_mero + 0.0005
@@ -77,8 +77,5 @@ try:
             GPIO.setup(l3_gpio, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         sleep(0.1)
         
-        
-        
-    print(eon_mero)
 except KeyboardInterrupt:  
     GPIO.cleanup()
