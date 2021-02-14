@@ -46,7 +46,7 @@ mycursor = db.cursor()
 GPIO.setup(l1_gpio, GPIO.IN)
 GPIO.setup(l2_gpio, GPIO.IN)
 GPIO.setup(l3_gpio, GPIO.IN)
-print("GPIO setup cuccess!"
+print("GPIO setup success!")
 
 try:
     while True:
