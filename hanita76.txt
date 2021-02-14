@@ -1,0 +1,19 @@
+Kedves Anita,
+itt osztom meg a kodot, mert itt hasznalom amugy is. Az eddigi verziok azok olyanok, hogy nincseken publikalhato formaban... xD
+Viszont keszitettem egy uj github accountot es ide atrakom azokat a kodokat amik valamenyire strukturaltak. Ez a verzio fut a raspberry-n.
+Ez public repo, igy account nelkul is elerheto.
+
+Kezdem megfejteni, hogy mi lehet a baj. Sajnos a python-ban valtozonak sikerult "localtime" nevet adnom. Ez kezenfekvo volt, mert egyertelmu, DE
+a mysql-ben van egy ilyen parancs, es a python scriptbol nem az en valtozom erteke kerul a fuggvenybe hanem a mysql probalja ertelmezni hogy "localtime" parancs erkezett.
+Ezt ha minden jol megy akkor ma este (2021.02.14) meg tudom majd nezni. Tovabba fel fogom meg ide tolteni scripteket. Ezekben probalkoztam a python --> mysql dologgal.
+A PHP-val egyelore meg nem foglalkoznek azzal majd ha ez a resz megy es megbizhatoan fut. Amig nincsenek stabil adatok az sql tablaba addig csak ezzel szeretnke foglalkozni.
+
+Este feltoltom a masik ket sql-es scriptet is. Azokat is rancba kell szednem... :D
+
+Itt most elerheto a nyers python script, hogy egyertelmu legyen minden. Szerepel benne a mysql serverhez valo csatlakozas is, IP-vel nevekkel minden. 
+Nem kell aggodni, vpn alol elerheto csak minden. Igy nagyabol hasznalhatatlan. 
+
+Szeretnek kesziteni egy ppt-t is hogy lehessen latni egyertelmuen hogy mi merre kommunikal, es akkor teljesen atlalhato lesz.
+
+Rovid leirasok a python file-ba is vannak, hogy minek mi a dolga.
+Remelem kovetheto lesz a logikam(...bal kezes vagyok...)
