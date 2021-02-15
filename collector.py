@@ -52,7 +52,7 @@ try:
     while True:
         if GPIO.input(l1_gpio):
             print("L1-->", datetime.now())
-            mycursor.execute("INSERT INTO TVOF11_1 (Datetime) VALUES (localtime)")
+            mycursor.execute("INSERT INTO L1_be (L1_be_datum) VALUES (localtime)")
             db.commit()
             eon_mero = eon_mero + 0.0005
             print("EON:",round(eon_mero, 4))
@@ -61,7 +61,7 @@ try:
 
         if GPIO.input(l2_gpio):
             print("L2-->", datetime.now())
-            mycursor.execute("INSERT INTO TVOF11_2 (Datetime) VALUES (localtime)")
+            mycursor.execute("INSERT INTO L2_be (L2_be_datum) VALUES (localtime)")
             db.commit()
             eon_mero = eon_mero + 0.0005
             print("EON:", round(eon_mero, 4))
@@ -70,7 +70,7 @@ try:
 
         if GPIO.input(l3_gpio):
             print("L3-->", datetime.now())
-            mycursor.execute("INSERT INTO TVOF11_3 (Datetime) VALUES (localtime)")
+            mycursor.execute("INSERT INTO L3_be (L3_be_datum) VALUES (localtime)")
             db.commit()
             eon_mero = eon_mero + 0.0005
             print("EON:", round(eon_mero, 4))
