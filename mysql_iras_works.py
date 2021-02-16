@@ -19,3 +19,5 @@ mycursor.execute("INSERT INTO REAL_TIME(Time, L1, L2, L3) VALUES (%s,%s,%s,%s)",
 db.commit()
 
 print("smart_home")
+
+#commit-hoz proba
