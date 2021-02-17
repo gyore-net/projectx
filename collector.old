@@ -11,6 +11,9 @@ from datetime import datetime
 #Szukseges ahhoz, hogy a python tudja kezelni a mysql-t.
 import mysql.connector
 
+#A helyi idot kerdezem le vele(a raspberry levo idot kerdezi le). Az rpi es a mysql server egy azon ntp server-t hasznal, es elvben minden nap 0:00-kor szinkrinizalnak.
+localtime = datetime.now()
+
 #Beallitja, hogy a GPIO-t hogyan lehessen meghivni. Jelenleg a BCM-et hasznalom, ez a GPIO pin szamat hasznalja, nem pedig az rpi-n a pinek kiosztasat.
 #pinout parancsra a GPIO-t kijelzi, es az alapjan a szamozas alapjan mukodik
 GPIO.setmode(GPIO.BCM)
@@ -48,34 +51,31 @@ print("GPIO setup success!")
 try:
     while True:
         if GPIO.input(l1_gpio):
-            now = datetime.now()
-            formatted_date = now.strftime('%Y-%m-%d %H:%M:%S.%f')
-            print("L1-->", formattted_date)
-            mycursor.execute("INSERT INTO L1_be (L1_be_datum) VALUES (%s)", (now.strftime('%Y-%m-%d %H:%M:%S.%f'),))
+            print("L1-->", datetime.now())
+            mycursor.execute("INSERT INTO L1_be (L1_be_datum) VALUES (localtime)")
             db.commit()
             eon_mero = eon_mero + 0.0005
-            print("EON mero allasa:",round(eon_mero, 4))
+            print("EON:",round(eon_mero, 4))
             GPIO.setup(l1_gpio, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-        
+        sleep(0.1)
+
         if GPIO.input(l2_gpio):
-            now = datetime.now()
-            formatted_date = now.strftime('%Y-%m-%d %H:%M:%S.%f')
-            print("L2-->", formattted_date)
-            mycursor.execute("INSERT INTO L2_be (L2_be_datum) VALUES (%s)", (now.strftime('%Y-%m-%d %H:%M:%S.%f'),))
+            print("L2-->", datetime.now())
+            mycursor.execute("INSERT INTO L2_be (L2_be_datum) VALUES (localtime)")
             db.commit()
             eon_mero = eon_mero + 0.0005
-            print("EON mero allasa:", round(eon_mero, 4))
+            print("EON:", round(eon_mero, 4))
             GPIO.setup(l2_gpio, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-       
+        sleep(0.1)
+
         if GPIO.input(l3_gpio):
-            now = datetime.now()
-            formatted_date = now.strftime('%Y-%m-%d %H:%M:%S.%f')
-            print("L3-->", formattted_date)
-            mycursor.execute("INSERT INTO L3_be (L3_be_datum) VALUES (%s)", (now.strftime('%Y-%m-%d %H:%M:%S.%f'),))
+            print("L3-->", datetime.now())
+            mycursor.execute("INSERT INTO L3_be (L3_be_datum) VALUES (localtime)")
             db.commit()
             eon_mero = eon_mero + 0.0005
-            print("EON mero allasa:", round(eon_mero, 4))
+            print("EON:", round(eon_mero, 4))
             GPIO.setup(l3_gpio, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        sleep(0.1)
         
 except KeyboardInterrupt:  
     GPIO.cleanup()
