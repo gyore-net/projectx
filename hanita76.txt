@@ -17,3 +17,46 @@ Szeretnek kesziteni egy ppt-t is hogy lehessen latni egyertelmuen hogy mi merre 
 
 Rovid leirasok a python file-ba is vannak, hogy minek mi a dolga.
 Remelem kovetheto lesz a logikam(...bal kezes vagyok...)
+
+update 2021.02.17.
+
+A localtime valtozot lecsereltem. Ennek oka, hogy a "localtime" mint parancs letezik a mysql-ben. Erre a parancsra a mysql serveren futo idot kerdezi le. Tehat, ameddig 
+ezt a valtozot hasznaltam, addig a mysql serveren levo idok kerultek naplozasra. Jelen esetben ez nem gond, mivel a vps(ahol a mysql fut) helyileg budapesten van, igy az ido nem ter el.
+Viszont! Amennyiben at szeretnem koltoztetni a vps pl Nemetorszagba(volt mar ra pelda :D ) - akkor ez gond lehet, illetve az elv sem felel meg, hogy nem ott kerul az idopecset az esemenyre ahol az keletkezik.
+Ettol fuggetlenul a raspberry a mysql servert futtato rendszertol veszi az idot. 
+
+A masik dolog, hogy nem volt egyertelmu, hogy az idoformatumok definialasa/eloallitasa.
+
+A mysql manualban ez vala:
+https://dev.mysql.com/doc/refman/8.0/en/datetime.html
+
+Röviden: YYY-MM-DD hh:mm:ss - igy kell megkapnia a datetime datatype-hoz az idot, minden mas esetben nem tudja kezelni, es syntax error lesz...
+
+Hogy ne legyen egyszeru, nem terveztem mas adatot felvenni a tablaba csak az idot. Ennek az az oka, hogy egyelore nem erzem szuksegesnek, mert ebbol az egy adatbol es a fogyasztasmero fix tulajdonsagabol
+meg tudom hatarozni amire szuksegem van. Ebben az esetben mivel csak ez egy sor van a tablaba igy ez lesz a "primary key" - ami azt jelenti hogy nem lehet ket egyforma belole. Ezzel addig nem is volt gond mig
+2 db jelet nem kuldtem 1 masodpercen belul. Itt hibara  futott, hogy duplikalva van az adat es ugye ilyen nem lehet. Ekkor vettem eszre, hogy masodpercig van csak az idopont meghatarozva. pl.: 12:30:22
+Ebbol derult ki az is, hogy orat kellene allitanom valamelyik rendszeren, hogy megbizonyosodjak rola, hogy rossz idobelyeg kerul a tablaba. A raspberry-n elallitottam az orat, es hat az ido nem valtozott a tablaba...
+
+Innen tudtam hogy nem jo, es meg bujni kell a mysql manualt.
+
+https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html
+
+Ez a resz hozta a megoldas elso felet, itt van hogy milyen formatumban lehet kuldeni a mysql-nek datumot.
+Ezzel igazabol celegyenesbe voltam, mert ossze tudtam rakni azt hogy mit kell kuldeni: %Y-%m-%d %H:%i:%S.%f ezt kell kapni a az sql-nek hogy az legyen elmentve amit en szeretnek.
+
+Ezt kellett eloallitani pythonban... - nem volt nehez, csak itt is feluletesen neztem meg a dolgokat es ugyan azt a "datum kodolast hasznaltam" mint amit az sql, gondolvan arra hogy ez akkor szabvanyos... - hat nem.
+Roviden: %M a perc "kodja" python-ban es %i mysqlben... ezzel csak 1 orat vesztegettem el... :) - es akkor itt van a legyen igazabol
+
+Ahogyan en gondoltam, hogy el kell kuldeni az adatot(ez ugye nem mukodik): mycursor.execute("INSERT INTO proba (datum) VALUES (%Y-%m-%d %H:%i:%S.%f)", (formatted_date))
+Ez pedig ahogy valojaban el kell kuldeni es mukodik is: mycursor.execute("INSERT INTO L3_be (L3_be_datum) VALUES (%s)", (now.strftime('%Y-%m-%d %H:%M:%S.%f'),))
+
+Szoval mukodik a kod. Ezzel mar el tudok indulni, olyan 6-7 adat tud rogzulni masodpercenkent ez nekem egyelore elg lesz.
+
+##Kovetkezo merfoldko:
+
+A kovetkezo problema ami jelentkezett, hogy eleg nagy a cpu terheles, ha fut a python script. A collector.py-ben a while ciklus jelenleg folyamatos ciklusban van, hiszen nem lehet tudni, hogy mikor megyik GPIO-n lesz legkozelebb jel. 
+Arra gondoltam hogy keszitek egy elovalasztot, hogy csak eddig az elovalasztoig fusson le a script es ne menjen bele a while-ba. Nem tudom hogy van-e ertelme(nem tudom hogy tudok-e felszabaditani vele eroforrast).
+Ugyan ez a script, kisebb modositasokkal, x86-os rendszeren(Ubuntu 20.04.1 LTS 4GB ram 2cpu mag 4%-ra terhel 1 magot) A raspberry-n ARM alapu a rendszer amugy, 4 magos 4x1.5Ghz 1 magot 100%-ban terhel. Ahogy "egyre jobban igazza"
+valik a while, ugy szabadul fel eroforras. 
+
+

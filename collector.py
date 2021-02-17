@@ -50,7 +50,7 @@ try:
         if GPIO.input(l1_gpio):
             now = datetime.now()
             formatted_date = now.strftime('%Y-%m-%d %H:%M:%S.%f')
-            print("L1-->", formattted_date)
+            print("L1-->", formatted_date)
             mycursor.execute("INSERT INTO L1_be (L1_be_datum) VALUES (%s)", (now.strftime('%Y-%m-%d %H:%M:%S.%f'),))
             db.commit()
             eon_mero = eon_mero + 0.0005
@@ -60,7 +60,7 @@ try:
         if GPIO.input(l2_gpio):
             now = datetime.now()
             formatted_date = now.strftime('%Y-%m-%d %H:%M:%S.%f')
-            print("L2-->", formattted_date)
+            print("L2-->", formatted_date)
             mycursor.execute("INSERT INTO L2_be (L2_be_datum) VALUES (%s)", (now.strftime('%Y-%m-%d %H:%M:%S.%f'),))
             db.commit()
             eon_mero = eon_mero + 0.0005
@@ -70,7 +70,7 @@ try:
         if GPIO.input(l3_gpio):
             now = datetime.now()
             formatted_date = now.strftime('%Y-%m-%d %H:%M:%S.%f')
-            print("L3-->", formattted_date)
+            print("L3-->", formatted_date)
             mycursor.execute("INSERT INTO L3_be (L3_be_datum) VALUES (%s)", (now.strftime('%Y-%m-%d %H:%M:%S.%f'),))
             db.commit()
             eon_mero = eon_mero + 0.0005
