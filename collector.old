@@ -76,9 +76,6 @@ try:
             print("EON:", round(eon_mero, 4))
             GPIO.setup(l3_gpio, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         sleep(0.1)
-
-        if localtime == "2021-02-15 16:36:00":
-            print("Ez igy megy:", eon_mero)
         
 except KeyboardInterrupt:  
     GPIO.cleanup()
